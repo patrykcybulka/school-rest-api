@@ -1,5 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
-using school_rest_api.Entries;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace school_rest_api.Controllers
 {
@@ -7,17 +7,13 @@ namespace school_rest_api.Controllers
     [Route("[controller]")]
     public class ClassesController : ControllerBase
     {
+        private readonly IMediator                  _mediator;
         private readonly ILogger<ClassesController> _logger;
 
-        public ClassesController(ILogger<ClassesController> logger)
+        public ClassesController(IMediator mediator, ILogger<ClassesController> logger)
         {
-            _logger = logger;
-        }
-
-        [HttpGet(Name = "GetClasses")]
-        public IEnumerable<ClassEntry> Get()
-        {
-            return null;
+            _mediator = mediator;
+            _logger   = logger;
         }
     }
 }

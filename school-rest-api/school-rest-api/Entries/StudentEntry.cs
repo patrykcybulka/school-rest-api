@@ -1,7 +1,4 @@
-﻿using System.ComponentModel.DataAnnotations;
-using System.ComponentModel.DataAnnotations.Schema;
-
-namespace school_rest_api.Entries
+﻿namespace school_rest_api.Entries
 {
     public class StudentEntry
     {

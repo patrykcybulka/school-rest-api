@@ -1,6 +1,8 @@
-﻿namespace school_rest_api.Functions.Commands
+﻿using MediatR;
+
+namespace school_rest_api.Functions.Commands
 {
-    public class DeleteClassCommand
+    public class DeleteClassCommand : IRequest
     {
     }
 }

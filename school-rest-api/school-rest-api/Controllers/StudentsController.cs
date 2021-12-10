@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using MediatR;
+using Microsoft.AspNetCore.Mvc;
 
 namespace school_rest_api.Controllers
 {
@@ -6,16 +7,13 @@ namespace school_rest_api.Controllers
     [Route("[controller]")]
     public class StudentsController : ControllerBase
     {
+        private readonly IMediator                   _mediator;
         private readonly ILogger<StudentsController> _logger;
 
-        public StudentsController(ILogger<StudentsController> logger)
+        public StudentsController(IMediator mediator, ILogger<StudentsController> logger)
         {
-            _logger = logger;
-        }
-
-        public IActionResult Index()
-        {
-            return View();
+            _mediator = mediator;
+            _logger   = logger;
         }
     }
 }
