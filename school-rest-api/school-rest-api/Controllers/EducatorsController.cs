@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Mvc;
 using school_rest_api.Enums;
 using school_rest_api.Functions.Commands;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
 
 namespace school_rest_api.Controllers
@@ -12,6 +13,14 @@ namespace school_rest_api.Controllers
     {
         public EducatorsController(IMediator mediator, ILogger<EducatorsController> logger) : base(mediator, logger)
         {
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllEducations()
+        {
+            var command = new GetAllEducatorsQuery();
+
+            return await sendCommand(command);
         }
 
         [HttpPost]

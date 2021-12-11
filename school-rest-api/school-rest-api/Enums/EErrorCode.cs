@@ -11,5 +11,7 @@
         UndefinedGender = 5,
         EducatorNotExist = 6,
         StudentNotExist = 7,
+        NameIsUsed = 8,
+        ClassAssignedToAnotherEducator = 9,
     }
 }

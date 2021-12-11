@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using school_rest_api.Functions.Commands;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
 
 namespace school_rest_api.Controllers
@@ -12,6 +13,14 @@ namespace school_rest_api.Controllers
 
         public StudentsController(IMediator mediator, ILogger<StudentsController> logger) : base(mediator, logger)
         {
+        }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllStudents()
+        {
+            var command = new GetAllStudentsQuery();
+
+            return await sendCommand(command);
         }
 
         [HttpPost]

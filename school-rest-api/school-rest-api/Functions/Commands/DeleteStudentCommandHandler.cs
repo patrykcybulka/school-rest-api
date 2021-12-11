@@ -19,8 +19,7 @@ namespace school_rest_api.Functions.Commands
         {
             var studentEntry = _schoolDbContext.Students.FirstOrDefault(c => c.Id == request.Model.Id);
 
-            if (studentEntry == null)
-                throw new SchoolException(EErrorCode.StudentNotExist);
+            Guard.IsTrue(studentEntry == null, EErrorCode.StudentNotExist);
 
             _schoolDbContext.Students.Remove(studentEntry);
 

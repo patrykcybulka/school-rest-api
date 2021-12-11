@@ -19,14 +19,9 @@ namespace school_rest_api.Functions.Commands
 
         public async Task<AddStudentResult> Handle(AddStudentCommand request, CancellationToken cancellationToken)
         {
-            if (!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId))
-                throw new SchoolException(EErrorCode.ClassNotExist);
-
-            if (!Enum.GetValues(typeof(ELanguageGroup)).Cast<ELanguageGroup>().Contains(request.Model.LanguageGroup))
-                throw new SchoolException(EErrorCode.LanguageGrupeNotExitst);
-
-            if (!Enum.GetValues(typeof(EGender)).Cast<EGender>().Contains(request.Model.Gender))
-                throw new SchoolException(EErrorCode.UndefinedGender);
+            Guard.IsTrue(!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
+            Guard.IsTrue(!Enum.GetValues(typeof(ELanguageGroup)).Cast<ELanguageGroup>().Contains(request.Model.LanguageGroup), EErrorCode.LanguageGrupeNotExitst);
+            Guard.IsTrue(!Enum.GetValues(typeof(EGender)).Cast<EGender>().Contains(request.Model.Gender), EErrorCode.UndefinedGender);
 
             var studentEntry = new StudentEntry
             {

@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using school_rest_api.Functions.Commands;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
 
 namespace school_rest_api.Controllers
@@ -12,6 +13,15 @@ namespace school_rest_api.Controllers
         public ClassesController(IMediator mediator, ILogger<ClassesController> logger) : base(mediator, logger)
         {
         }
+
+        [HttpGet]
+        public async Task<IActionResult> GetAllClasses()
+        {
+            var command = new GetAllClassesQuery();
+
+            return await sendCommand(command);
+        }
+
 
         [HttpPost]
         public async Task<IActionResult> AddClass([FromBody] AddClassDTO model)

@@ -19,8 +19,7 @@ namespace school_rest_api.Functions.Commands
         {
             var educatorEntry = _schoolDbContext.Educators.FirstOrDefault(c => c.Id == request.Model.Id);
 
-            if (educatorEntry == null)
-                throw new SchoolException(EErrorCode.EducatorNotExist);
+            Guard.IsTrue(educatorEntry == null, EErrorCode.EducatorNotExist);
 
             _schoolDbContext.Educators.Remove(educatorEntry);
 
