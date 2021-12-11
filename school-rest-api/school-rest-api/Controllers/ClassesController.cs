@@ -1,19 +1,40 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Mvc;
+using school_rest_api.Functions.Commands;
+using school_rest_api.Models.DTO;
 
 namespace school_rest_api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
-    public class ClassesController : ControllerBase
+    public class ClassesController : AController
     {
-        private readonly IMediator                  _mediator;
-        private readonly ILogger<ClassesController> _logger;
-
-        public ClassesController(IMediator mediator, ILogger<ClassesController> logger)
+        public ClassesController(IMediator mediator, ILogger<ClassesController> logger) : base(mediator, logger)
         {
-            _mediator = mediator;
-            _logger   = logger;
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> AddClass([FromBody] AddClassDTO model)
+        {
+            var command = new AddClassCommand(model);
+
+            return await sendCommand(command);
+        }
+
+        [HttpPut]
+        public async Task<IActionResult> UpdateClass([FromBody] UpdateClassDTO model)
+        {
+            var command = new UpdateClassCommand(model);
+
+            return await sendCommand(command);
+        }
+
+        [HttpDelete]
+        public async Task<IActionResult> DeleteClass([FromBody] DeleteClassDTO model)
+        {
+            var command = new DeleteClassCommand(model);
+
+            return await sendCommand(command);
         }
     }
 }

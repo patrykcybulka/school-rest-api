@@ -1,6 +1,6 @@
 ﻿using System.ComponentModel.DataAnnotations;
 
-namespace school_rest_api.Models
+namespace school_rest_api.Models.DTO
 {
     public class AddEducatorDTO
     {

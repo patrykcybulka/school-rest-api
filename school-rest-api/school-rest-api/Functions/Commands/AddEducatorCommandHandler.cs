@@ -3,10 +3,12 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Models.DTO;
+using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
 {
-    public class AddEducatorCommandHandler : IRequestHandler<AddEducatorCommand, Guid>
+    public class AddEducatorCommandHandler : IRequestHandler<AddEducatorCommand, AddEducatorResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
 
@@ -15,7 +17,7 @@ namespace school_rest_api.Functions.Commands
             _schoolDbContext = schoolDbContext;
         }
 
-        public async Task<Guid> Handle(AddEducatorCommand request, CancellationToken cancellationToken)
+        public async Task<AddEducatorResult> Handle(AddEducatorCommand request, CancellationToken cancellationToken)
         {
             if (!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId))
                 throw new SchoolException(EErrorCode.ClassNotExist);
@@ -30,9 +32,9 @@ namespace school_rest_api.Functions.Commands
 
             _schoolDbContext.Educators.Add(educatorEntry);
             
-            await _schoolDbContext.SaveChangesAsync();
+            await _schoolDbContext.SaveChangesAsync(cancellationToken);
 
-            return educatorEntry.Id;
+            return new AddEducatorResult { Id = educatorEntry.Id };
         }
     }
 }
