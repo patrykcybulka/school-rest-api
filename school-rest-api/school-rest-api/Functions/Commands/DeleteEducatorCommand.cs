@@ -4,7 +4,7 @@ using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
 {
-    public class DeleteEducatorCommand : ACommand<DeleteEducatorDTO>, IRequest<EmptyObjectResult>
+    public class DeleteEducatorCommand : AFunction<DeleteEducatorDTO>, IRequest<EmptyObjectResult>
     {
         public DeleteEducatorCommand(DeleteEducatorDTO model) : base(model)
         {

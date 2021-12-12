@@ -1,4 +1,4 @@
-﻿namespace school_rest_api.Entries
+﻿namespace school_rest_api.Enums
 {
     public enum EGender
     {

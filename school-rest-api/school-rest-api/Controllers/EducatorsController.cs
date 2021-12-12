@@ -8,15 +8,25 @@ using school_rest_api.Models.DTO;
 namespace school_rest_api.Controllers
 {
     [ApiController]
-    [Route("[controller]")]
+    [Route("educators")]
     public class EducatorsController : AController
     {
         public EducatorsController(IMediator mediator, ILogger<EducatorsController> logger) : base(mediator, logger)
         {
         }
 
+        [HttpGet("{id}")]
+        public async Task<IActionResult> Get(Guid id)
+        {
+            var model = new GetEducatorByIdQueryDTO { Id = id };
+
+            var command = new GetEducatorByIdQuery(model);
+
+            return await sendCommand(command);
+        }
+
         [HttpGet]
-        public async Task<IActionResult> GetAllEducations()
+        public async Task<IActionResult> GetAll()
         {
             var command = new GetAllEducatorsQuery();
 
@@ -24,7 +34,7 @@ namespace school_rest_api.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> AddEducator([FromBody] AddEducatorDTO model)
+        public async Task<IActionResult> Add([FromBody] AddEducatorDTO model)
         {
             var command = new AddEducatorCommand(model);
 
@@ -32,7 +42,7 @@ namespace school_rest_api.Controllers
         }
 
         [HttpPut]
-        public async Task<IActionResult> UpdateEducator([FromBody] UpdateEducatorDTO model)
+        public async Task<IActionResult> Update([FromBody] UpdateEducatorDTO model)
         {
             var command = new UpdateEducatorCommand(model);
 
@@ -40,7 +50,7 @@ namespace school_rest_api.Controllers
         }
 
         [HttpDelete]
-        public async Task<IActionResult> DeleteEducator([FromBody] DeleteEducatorDTO model)
+        public async Task<IActionResult> Delete([FromBody] DeleteEducatorDTO model)
         {
             var command = new DeleteEducatorCommand(model);
 

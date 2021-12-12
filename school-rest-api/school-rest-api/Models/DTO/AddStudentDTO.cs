@@ -1,4 +1,4 @@
-﻿using school_rest_api.Entries;
+﻿using school_rest_api.Enums;
 using System.ComponentModel.DataAnnotations;
 
 namespace school_rest_api.Models.DTO

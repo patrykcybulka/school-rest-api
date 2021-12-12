@@ -1,4 +1,6 @@
-﻿namespace school_rest_api.Entries
+﻿using school_rest_api.Enums;
+
+namespace school_rest_api.Entries
 {
     public class StudentEntry
     {
