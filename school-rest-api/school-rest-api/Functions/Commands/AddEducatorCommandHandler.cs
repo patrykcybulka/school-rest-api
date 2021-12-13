@@ -3,6 +3,7 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -10,10 +11,12 @@ namespace school_rest_api.Functions.Commands
     public class AddEducatorCommandHandler : IRequestHandler<AddEducatorCommand, AddEducatorResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
+        private readonly IRedisDbHelper  _redisDbHelper;
 
-        public AddEducatorCommandHandler(SchoolDbContext schoolDbContext)
+        public AddEducatorCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
         {
             _schoolDbContext = schoolDbContext;
+            _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<AddEducatorResult> Handle(AddEducatorCommand request, CancellationToken cancellationToken)
@@ -32,7 +35,16 @@ namespace school_rest_api.Functions.Commands
             
             await _schoolDbContext.SaveChangesAsync(cancellationToken);
 
+            clearCache();
+
             return new AddEducatorResult { Id = educatorEntry.Id };
+        }
+
+        private void clearCache()
+        {
+            var keys = new List<string> { nameof(GetAllEducatorsQuery) };
+
+            _redisDbHelper.RemoveOldDataAsync(keys);
         }
     }
 }

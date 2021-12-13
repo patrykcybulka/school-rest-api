@@ -3,6 +3,7 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -10,10 +11,12 @@ namespace school_rest_api.Functions.Commands
     public class UpdateClassCommandHandler : IRequestHandler<UpdateClassCommand, UpdateClassResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
+        private readonly IRedisDbHelper  _redisDbHelper;
 
-        public UpdateClassCommandHandler(SchoolDbContext schoolDbContext)
+        public UpdateClassCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
         {
             _schoolDbContext = schoolDbContext;
+            _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<UpdateClassResult> Handle(UpdateClassCommand request, CancellationToken cancellationToken)
@@ -33,6 +36,8 @@ namespace school_rest_api.Functions.Commands
 
             await _schoolDbContext.SaveChangesAsync(cancellationToken);
 
+            clearCache(request.Model.Id);
+
             return new UpdateClassResult { Id = classEntry.Id };
         }
 
@@ -41,6 +46,17 @@ namespace school_rest_api.Functions.Commands
             classEntry.Name = className;
 
             return classEntry;
+        }
+
+        private void clearCache(Guid classId)
+        {
+            var keys = new List<string>
+            {
+                nameof(GetAllClassesQuery),
+                nameof(GetClassByIdQuery) + classId.ToString()
+            };
+
+            _redisDbHelper.RemoveOldDataAsync(keys);
         }
     }
 }

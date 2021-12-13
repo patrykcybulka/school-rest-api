@@ -3,6 +3,7 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -10,10 +11,12 @@ namespace school_rest_api.Functions.Commands
     public class AddClassCommandHandler : IRequestHandler<AddClassCommand, AddClassResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
+        private readonly IRedisDbHelper  _redisDbHelper;
 
-        public AddClassCommandHandler(SchoolDbContext schoolDbContext)
+        public AddClassCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
         {
             _schoolDbContext = schoolDbContext;
+            _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<AddClassResult> Handle(AddClassCommand request, CancellationToken cancellationToken)
@@ -33,7 +36,16 @@ namespace school_rest_api.Functions.Commands
 
             await _schoolDbContext.SaveChangesAsync(cancellationToken);
 
+            clearCache();
+
             return new AddClassResult { Id = classEntry.Id };
+        }
+
+        private void clearCache()
+        {
+            var keys = new List<string> { nameof(GetAllClassesQuery) };
+
+            _redisDbHelper.RemoveOldDataAsync(keys);
         }
     }
 }

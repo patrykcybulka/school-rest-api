@@ -3,6 +3,7 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
 using school_rest_api.Models.Results;
 
@@ -11,10 +12,12 @@ namespace school_rest_api.Functions.Commands
     public class UpdateEducatorCommandHandler : IRequestHandler<UpdateEducatorCommand, UpdateEducatorResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
+        private readonly IRedisDbHelper  _redisDbHelper;
 
-        public UpdateEducatorCommandHandler(SchoolDbContext schoolDbContext)
+        public UpdateEducatorCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
         {
             _schoolDbContext = schoolDbContext;
+            _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<UpdateEducatorResult> Handle(UpdateEducatorCommand request, CancellationToken cancellationToken)
@@ -32,6 +35,8 @@ namespace school_rest_api.Functions.Commands
 
             await _schoolDbContext.SaveChangesAsync(cancellationToken);
 
+            clearCache(request.Model.ClassId);
+
             return new UpdateEducatorResult { Id = educatorEntry.Id };
         }
 
@@ -42,6 +47,17 @@ namespace school_rest_api.Functions.Commands
             edycatorEntry.Surname   = newEducator.Surname;
 
             return edycatorEntry;
+        }
+
+        private void clearCache(Guid educatorId)
+        {
+            var keys = new List<string>
+            {
+                nameof(GetAllEducatorsQuery),
+                nameof(GetEducatorByIdQuery) + educatorId.ToString(),
+            };
+
+            _redisDbHelper.RemoveOldDataAsync(keys);
         }
     }
 }

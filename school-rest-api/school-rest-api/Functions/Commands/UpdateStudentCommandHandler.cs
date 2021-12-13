@@ -3,6 +3,7 @@ using school_rest_api.DbContexts;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
+using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
 using school_rest_api.Models.Results;
 
@@ -11,10 +12,12 @@ namespace school_rest_api.Functions.Commands
     public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, UpdateStudentResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
+        private readonly IRedisDbHelper  _redisDbHelper;
 
-        public UpdateStudentCommandHandler(SchoolDbContext schoolDbContext)
+        public UpdateStudentCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
         {
             _schoolDbContext = schoolDbContext;
+            _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<UpdateStudentResult> Handle(UpdateStudentCommand request, CancellationToken cancellationToken)
@@ -45,6 +48,17 @@ namespace school_rest_api.Functions.Commands
             studentEntry.LanguageGroup = newStudent.LanguageGroup;
 
             return studentEntry;
+        }
+
+        private void clearCache(Guid studentId)
+        {
+            var keys = new List<string>
+            {
+                nameof(GetAllStudentsQuery),
+                nameof(GetStudentByIdQuery) + studentId.ToString(),
+            };
+
+            _redisDbHelper.RemoveOldDataAsync(keys);
         }
     }
 }
