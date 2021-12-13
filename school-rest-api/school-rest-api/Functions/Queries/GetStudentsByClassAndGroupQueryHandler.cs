@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Models.Results;
 using school_rest_api.Models.Results.Items;
@@ -8,12 +8,12 @@ namespace school_rest_api.Functions.Queries
 {
     public class GetStudentsByClassAndGroupQueryHandler : IRequestHandler<GetStudentsByClassAndGroupQuery, GetStudentsByClassAndGroupResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public GetStudentsByClassAndGroupQueryHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public GetStudentsByClassAndGroupQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -21,13 +21,13 @@ namespace school_rest_api.Functions.Queries
         {
             var key = nameof(GetStudentsByClassAndGroupQuery) + request.Model.Id.ToString();
 
-            List<StudentEntry> studentsEntries = null;
+            IEnumerable<StudentEntry> studentsEntries = null;
 
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
 
             if (studentsEntries == null)
             {
-                studentsEntries = _schoolDbContext.Students.Where(s => s.ClassId == request.Model.Id && s.LanguageGroup == request.Model.LanguageGroup).ToList();
+                studentsEntries = _schoolDbManager.GetStudents(s => s.ClassId == request.Model.Id && s.LanguageGroup == request.Model.LanguageGroup);
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 

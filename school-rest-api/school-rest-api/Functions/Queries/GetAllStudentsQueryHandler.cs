@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Models.Results;
 using school_rest_api.Models.Results.Items;
@@ -8,12 +8,12 @@ namespace school_rest_api.Functions.Queries
 {
     public class GetAllStudentsQueryHandler : IRequestHandler<GetAllStudentsQuery, GetAllStudentsResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbContext;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public GetAllStudentsQueryHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public GetAllStudentsQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbContext = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -21,13 +21,13 @@ namespace school_rest_api.Functions.Queries
         {
             var key = nameof(GetAllStudentsQuery);
 
-            List<StudentEntry> studentsEntries = null;
+            IEnumerable<StudentEntry> studentsEntries = null;
 
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
 
             if (studentsEntries == null)
             {
-                studentsEntries = _schoolDbContext.Students.ToList();
+                studentsEntries = _schoolDbContext.GetAllStudent();
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 

@@ -5,7 +5,7 @@ VisualStudioVersion = 17.0.31919.166
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school-rest-api", "school-rest-api\school-rest-api.csproj", "{41E1553C-E1BE-4C68-A5B9-F6585D7571E9}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "school-rest-api-unit-tests", "school-rest-api-unit-tests\school-rest-api-unit-tests.csproj", "{9A7E1FFA-17E8-45EA-9E3C-82EE1B3D9297}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "school-rest-api-unit-tests", "school-rest-api-unit-tests\school-rest-api-unit-tests.csproj", "{9A7E1FFA-17E8-45EA-9E3C-82EE1B3D9297}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

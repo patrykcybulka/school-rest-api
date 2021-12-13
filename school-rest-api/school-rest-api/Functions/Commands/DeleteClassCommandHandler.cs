@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
 using school_rest_api.Functions.Queries;
@@ -9,27 +9,27 @@ namespace school_rest_api.Functions.Commands
 {
     public class DeleteClassCommandHandler : IRequestHandler<DeleteClassCommand, EmptyObjectResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public DeleteClassCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public DeleteClassCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<EmptyObjectResult> Handle(DeleteClassCommand request, CancellationToken cancellationToken)
         {
-            var classEntry = _schoolDbContext.Classes.FirstOrDefault(c => c.Id == request.Model.Id);
+            var classEntry = _schoolDbManager.GetClass(c => c.Id == request.Model.Id);
 
             Guard.IsTrue(classEntry == null, EErrorCode.ClassNotExist);
 
-            _schoolDbContext.Classes.Remove(classEntry);
+            _schoolDbManager.RemoveClass(classEntry);
 
             var educatorId = updateEducator(request.Model.Id);
             var studentIds = updateStudents(request.Model.Id);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache(request.Model.Id, educatorId, studentIds);
 
@@ -38,7 +38,7 @@ namespace school_rest_api.Functions.Commands
 
         private Guid updateEducator(Guid classId)
         {
-            var educatorEntry = _schoolDbContext.Educators.FirstOrDefault(e => e.ClassId == classId);
+            var educatorEntry = _schoolDbManager.GetEducator(e => e.ClassId == classId);
 
             if (educatorEntry == null)
             {
@@ -47,21 +47,21 @@ namespace school_rest_api.Functions.Commands
 
             educatorEntry.ClassId = Guid.Empty;
 
-            _schoolDbContext.Educators.Update(educatorEntry);
+            _schoolDbManager.UpdateEducator(educatorEntry);
 
             return educatorEntry.Id;
         }
 
         private IEnumerable<Guid> updateStudents(Guid classId)
         {
-            var studentsEntries = _schoolDbContext.Students.Where(s => s.ClassId == classId).ToList();
+            var studentsEntries = _schoolDbManager.GetStudents(s => s.ClassId == classId).ToList();
 
             foreach (var studentEntry in studentsEntries)
             {
                 studentEntry.ClassId = Guid.Empty;
             }
 
-            _schoolDbContext.UpdateRange(studentsEntries);
+            _schoolDbManager.UpdateManyStudent(studentsEntries);
 
             return studentsEntries.Select(s => s.Id);
         }

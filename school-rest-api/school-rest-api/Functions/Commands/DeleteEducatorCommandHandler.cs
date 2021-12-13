@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
 using school_rest_api.Functions.Queries;
@@ -9,24 +9,24 @@ namespace school_rest_api.Functions.Commands
 {
     public class DeleteEducatorCommandHandler : IRequestHandler<DeleteEducatorCommand, EmptyObjectResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public DeleteEducatorCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public DeleteEducatorCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<EmptyObjectResult> Handle(DeleteEducatorCommand request, CancellationToken cancellationToken)
         {
-            var educatorEntry = _schoolDbContext.Educators.FirstOrDefault(c => c.Id == request.Model.Id);
+            var educatorEntry = _schoolDbManager.GetEducator(c => c.Id == request.Model.Id);
 
             Guard.IsTrue(educatorEntry == null, EErrorCode.EducatorNotExist);
 
-            _schoolDbContext.Educators.Remove(educatorEntry);
+            _schoolDbManager.RemoveEducator(educatorEntry);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache(request.Model.Id);
 

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -9,12 +9,12 @@ namespace school_rest_api.Functions.Queries
 {
     public class GetStudentByIdQueryHandler : IRequestHandler<GetStudentByIdQuery, GetStudentByIdResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public GetStudentByIdQueryHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public GetStudentByIdQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -28,7 +28,7 @@ namespace school_rest_api.Functions.Queries
 
             if (studentsEntry == null)
             {
-                studentsEntry = _schoolDbContext.Students.FirstOrDefault(s => s.Id == request.Model.Id);
+                studentsEntry = _schoolDbManager.GetStudent(s => s.Id == request.Model.Id);
 
                 Guard.IsTrue(studentsEntry == null, EErrorCode.StudentNotExist);
 

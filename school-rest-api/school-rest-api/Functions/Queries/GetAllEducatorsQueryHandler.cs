@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Models.Results;
 using school_rest_api.Models.Results.Items;
@@ -8,12 +8,12 @@ namespace school_rest_api.Functions.Queries
 {
     public class GetAllEducatorsQueryHandler : IRequestHandler<GetAllEducatorsQuery, GetAllEducatorsResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public GetAllEducatorsQueryHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public GetAllEducatorsQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -21,13 +21,13 @@ namespace school_rest_api.Functions.Queries
         {
             var key = nameof(GetAllEducatorsQuery);
 
-            List<EducatorEntry> educatorsEntries = null;
+            IEnumerable<EducatorEntry> educatorsEntries = null;
 
             educatorsEntries = await _redisDbHelper.GetDataAsync<List<EducatorEntry>>(key);
 
             if (educatorsEntries == null)
             {
-                educatorsEntries = _schoolDbContext.Educators.ToList();
+                educatorsEntries = _schoolDbManager.GetAllEducator();
                 _redisDbHelper.SetDataAsync(key, educatorsEntries);
             }
 

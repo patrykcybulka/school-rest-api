@@ -1,6 +1,6 @@
-﻿namespace school_rest_api.DbContexts
+﻿namespace school_rest_api.Databases
 {
-    public interface IRedisDbHelper
+    public interface IRedisDbManager
     {
         void SetDataAsync<T>(string key, T data);
 

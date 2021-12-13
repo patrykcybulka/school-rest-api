@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -11,12 +11,12 @@ namespace school_rest_api.Functions.Commands
 {
     public class UpdateStudentCommandHandler : IRequestHandler<UpdateStudentCommand, UpdateStudentResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public UpdateStudentCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public UpdateStudentCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -24,17 +24,17 @@ namespace school_rest_api.Functions.Commands
         {
             Guard.IsTrue(!Enum.GetValues(typeof(ELanguageGroup)).Cast<ELanguageGroup>().Contains(request.Model.LanguageGroup), EErrorCode.LanguageGrupeNotExitst);
             Guard.IsTrue(!Enum.GetValues(typeof(EGender)).Cast<EGender>().Contains(request.Model.Gender), EErrorCode.UndefinedGender);
-            Guard.IsTrue(!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
+            Guard.IsTrue(!_schoolDbManager.ClassExist(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
 
-            var studentEntry = _schoolDbContext.Students.FirstOrDefault(s => s.Id == request.Model.Id);
+            var studentEntry = _schoolDbManager.GetStudent(s => s.Id == request.Model.Id);
 
             Guard.IsTrue(studentEntry == null, EErrorCode.StudentNotExist);
 
             studentEntry = modifyStudent(studentEntry, request.Model);
 
-            _schoolDbContext.Students.Update(studentEntry);
+            _schoolDbManager.UpdateStudent(studentEntry);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             return new UpdateStudentResult { Id = studentEntry.Id };
         }

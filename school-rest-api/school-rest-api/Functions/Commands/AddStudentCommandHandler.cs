@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -10,18 +10,18 @@ namespace school_rest_api.Functions.Commands
 {
     public class AddStudentCommandHandler : IRequestHandler<AddStudentCommand, AddStudentResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public AddStudentCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public AddStudentCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<AddStudentResult> Handle(AddStudentCommand request, CancellationToken cancellationToken)
         {
-            Guard.IsTrue(!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
+            Guard.IsTrue(!_schoolDbManager.ClassExist(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
             Guard.IsTrue(!Enum.GetValues(typeof(ELanguageGroup)).Cast<ELanguageGroup>().Contains(request.Model.LanguageGroup), EErrorCode.LanguageGrupeNotExitst);
             Guard.IsTrue(!Enum.GetValues(typeof(EGender)).Cast<EGender>().Contains(request.Model.Gender), EErrorCode.UndefinedGender);
 
@@ -35,9 +35,9 @@ namespace school_rest_api.Functions.Commands
                 LanguageGroup = request.Model.LanguageGroup
             };
 
-            _schoolDbContext.Students.Add(studentEntry);
+            _schoolDbManager.AddStudent(studentEntry);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache();
 

@@ -1,13 +1,13 @@
 ﻿using Newtonsoft.Json;
 using StackExchange.Redis;
 
-namespace school_rest_api.DbContexts
+namespace school_rest_api.Databases
 {
-    public class RedisDbHelper : IRedisDbHelper
+    public class RedisDbManager : IRedisDbManager
     {
         private readonly IConnectionMultiplexer _multiplexer;
 
-        public RedisDbHelper(IConnectionMultiplexer multiplexer)
+        public RedisDbManager(IConnectionMultiplexer multiplexer)
         {
             _multiplexer = multiplexer;
         }

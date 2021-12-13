@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -10,12 +10,12 @@ namespace school_rest_api.Functions.Commands
 {
     public class UpdateClassCommandHandler : IRequestHandler<UpdateClassCommand, UpdateClassResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public UpdateClassCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public UpdateClassCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -25,16 +25,16 @@ namespace school_rest_api.Functions.Commands
 
             Guard.IsTrue(!Constants.RangeOfClassNames.Contains(className), EErrorCode.NotSupportedClassName);
 
-            var classEntries = _schoolDbContext.Classes.Where(c => c.Id == request.Model.Id || c.Name == className);
+            var classEntries = _schoolDbManager.GetClasses(c => c.Id == request.Model.Id || c.Name == className);
 
             Guard.IsTrue(classEntries == null || !classEntries.Any(c => c.Id == request.Model.Id), EErrorCode.ClassNotExist);
             Guard.IsTrue(classEntries.Count() > 1, EErrorCode.NameIsUsed);
 
             var classEntry = modifyClass(classEntries.First(), className);
 
-            _schoolDbContext.Classes.Update(classEntry);
+            _schoolDbManager.UpdateClass(classEntry);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache(request.Model.Id);
 

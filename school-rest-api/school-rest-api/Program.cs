@@ -1,6 +1,6 @@
 ﻿using MediatR;
 using Microsoft.EntityFrameworkCore;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using StackExchange.Redis;
 using System.Reflection;
 
@@ -11,13 +11,14 @@ builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
 builder.Services.AddMediatR(Assembly.GetExecutingAssembly());
 
-var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnectionStrings"));
-var redisDbHelper = new RedisDbHelper(multiplexer);
-
-builder.Services.AddSingleton<IRedisDbHelper>(redisDbHelper);
-
 builder.Services.AddDbContext<SchoolDbContext>(options =>
   options.UseNpgsql(builder.Configuration.GetConnectionString("SchoolConnectionStrings")));
+
+var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetConnectionString("RedisConnectionStrings"));
+var redisDbManager = new RedisDbManager(multiplexer);
+
+builder.Services.AddSingleton<IRedisDbManager>(redisDbManager);
+builder.Services.AddSingleton<ISchoolDbManager, SchoolDbManager>();
 
 var app = builder.Build();
 

@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -10,18 +10,18 @@ namespace school_rest_api.Functions.Commands
 {
     public class AddEducatorCommandHandler : IRequestHandler<AddEducatorCommand, AddEducatorResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public AddEducatorCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public AddEducatorCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
         public async Task<AddEducatorResult> Handle(AddEducatorCommand request, CancellationToken cancellationToken)
         {
-            Guard.IsTrue(!_schoolDbContext.Classes.Any(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
+            Guard.IsTrue(!_schoolDbManager.ClassExist(c => c.Id == request.Model.ClassId), EErrorCode.ClassNotExist);
 
             var educatorEntry = new EducatorEntry
             {
@@ -31,9 +31,9 @@ namespace school_rest_api.Functions.Commands
                 Surname   = request.Model.Surname
             };
 
-            _schoolDbContext.Educators.Add(educatorEntry);
+            _schoolDbManager.AddEducator(educatorEntry);
             
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache();
 

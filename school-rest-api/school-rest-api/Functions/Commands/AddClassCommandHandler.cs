@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using school_rest_api.DbContexts;
+using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
@@ -10,12 +10,12 @@ namespace school_rest_api.Functions.Commands
 {
     public class AddClassCommandHandler : IRequestHandler<AddClassCommand, AddClassResult>
     {
-        private readonly SchoolDbContext _schoolDbContext;
-        private readonly IRedisDbHelper  _redisDbHelper;
+        private readonly ISchoolDbManager _schoolDbManager;
+        private readonly IRedisDbManager  _redisDbHelper;
 
-        public AddClassCommandHandler(SchoolDbContext schoolDbContext, IRedisDbHelper redisDbHelper)
+        public AddClassCommandHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
         {
-            _schoolDbContext = schoolDbContext;
+            _schoolDbManager = schoolDbManager;
             _redisDbHelper   = redisDbHelper;
         }
 
@@ -24,7 +24,7 @@ namespace school_rest_api.Functions.Commands
             var className = char.ToUpper(request.Model.Name);
 
             Guard.IsTrue(!Constants.RangeOfClassNames.Contains(className), EErrorCode.NotSupportedClassName);
-            Guard.IsTrue(_schoolDbContext.Classes.Any(c => c.Name == className), EErrorCode.ClassAlreadyExists);
+            Guard.IsTrue(_schoolDbManager.ClassExist(c => c.Name == className), EErrorCode.ClassAlreadyExists);
 
             var classEntry = new ClassEntry
             {
@@ -32,9 +32,9 @@ namespace school_rest_api.Functions.Commands
                 Name = className
             };
 
-            _schoolDbContext.Classes.Add(classEntry);
+            _schoolDbManager.AddClass(classEntry);
 
-            await _schoolDbContext.SaveChangesAsync(cancellationToken);
+            await _schoolDbManager.SaveChangesAsync();
 
             clearCache();
 

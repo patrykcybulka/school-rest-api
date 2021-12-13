@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using school_rest_api.Entries;
 
-namespace school_rest_api.DbContexts
+namespace school_rest_api.Databases
 {
     public class SchoolDbContext : DbContext
     {
