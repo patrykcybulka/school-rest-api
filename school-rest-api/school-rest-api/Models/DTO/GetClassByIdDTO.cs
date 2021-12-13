@@ -2,7 +2,7 @@
 
 namespace school_rest_api.Models.DTO
 {
-    public class GetEducatorByIdQueryDTO
+    public class GetClassByIdDTO
     {
         [Required]
         public Guid Id { get; set; }

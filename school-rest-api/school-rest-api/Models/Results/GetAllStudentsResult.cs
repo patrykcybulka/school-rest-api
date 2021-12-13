@@ -2,8 +2,8 @@
 
 namespace school_rest_api.Models.Results
 {
-    public class GetAllClassesResult
+    public class GetAllStudentsResult
     {
-        public IEnumerable<GetAllClassesItem> Classes { get; set; }
+        public IEnumerable<GetAllStudentsItem> Students { get; set; }
     }
 }

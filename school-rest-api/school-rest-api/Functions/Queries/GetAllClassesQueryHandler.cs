@@ -33,7 +33,7 @@ namespace school_rest_api.Functions.Queries
 
             return new GetAllClassesResult
             {
-                Classes = new List<GetAllClassesQueryItem>(classEntries.Select(c => new GetAllClassesQueryItem
+                Classes = new List<GetAllClassesItem>(classEntries.Select(c => new GetAllClassesItem
                 {
                     Id   = c.Id,
                     Name = c.Name

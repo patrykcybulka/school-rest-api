@@ -15,9 +15,9 @@ namespace school_rest_api.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<IActionResult> Get( Guid id )
+        public async Task<IActionResult> Get(Guid id)
         {
-            var model = new GetClassByIdQueryDTO { Id = id };
+            var model = new GetClassByIdDTO { Id = id };
 
             var command = new GetClassByIdQuery(model);
 

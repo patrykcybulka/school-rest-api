@@ -6,7 +6,7 @@ using school_rest_api.Models.Results.Items;
 
 namespace school_rest_api.Functions.Queries
 {
-    public class GetAllStudentsQueryHandler : IRequestHandler<GetAllStudentsQuery, GetAllStudentsQueryResult>
+    public class GetAllStudentsQueryHandler : IRequestHandler<GetAllStudentsQuery, GetAllStudentsResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
         private readonly IRedisDbHelper _redisDbHelper;
@@ -17,7 +17,7 @@ namespace school_rest_api.Functions.Queries
             _redisDbHelper   = redisDbHelper;
         }
 
-        public async Task<GetAllStudentsQueryResult> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
+        public async Task<GetAllStudentsResult> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
         {
             var key = nameof(GetAllStudentsQuery);
 
@@ -31,9 +31,9 @@ namespace school_rest_api.Functions.Queries
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 
-            return new GetAllStudentsQueryResult
+            return new GetAllStudentsResult
             {
-                Students = new List<GetAllStudentsQueryItem>(studentsEntries.Select(s => new GetAllStudentsQueryItem
+                Students = new List<GetAllStudentsItem>(studentsEntries.Select(s => new GetAllStudentsItem
                 {
                     Id            = s.Id,
                     ClassId       = s.ClassId,

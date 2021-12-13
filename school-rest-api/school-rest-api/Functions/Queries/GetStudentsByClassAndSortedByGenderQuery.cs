@@ -4,9 +4,9 @@ using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Queries
 {
-    public class GetStudentsByClassAndSortedByGenderQuery : AFunction<GetStudentsByClassAndSortedByGenderQueryDTO>, IRequest<GetStudentsSortedByGenderQueryResult>
+    public class GetStudentsByClassAndSortedByGenderQuery : AFunction<GetStudentsByClassAndSortedByGenderDTO>, IRequest<GetStudentsSortedByGenderResult>
     {
-        public GetStudentsByClassAndSortedByGenderQuery(GetStudentsByClassAndSortedByGenderQueryDTO model) : base(model)
+        public GetStudentsByClassAndSortedByGenderQuery(GetStudentsByClassAndSortedByGenderDTO model) : base(model)
         {
         }
     }

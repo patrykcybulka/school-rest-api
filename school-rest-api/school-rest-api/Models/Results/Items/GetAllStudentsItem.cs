@@ -2,7 +2,7 @@
 
 namespace school_rest_api.Models.Results.Items
 {
-    public class GetAllStudentsQueryItem
+    public class GetAllStudentsItem
     {
         public Guid Id { get; set; }
         public Guid ClassId { get; set; }

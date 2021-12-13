@@ -6,7 +6,7 @@ using school_rest_api.Models.Results.Items;
 
 namespace school_rest_api.Functions.Queries
 {
-    public class GetStudentsByClassAndSortedByGenderQueryHandler : IRequestHandler<GetStudentsByClassAndSortedByGenderQuery, GetStudentsSortedByGenderQueryResult>
+    public class GetStudentsByClassAndSortedByGenderQueryHandler : IRequestHandler<GetStudentsByClassAndSortedByGenderQuery, GetStudentsSortedByGenderResult>
     {
         private readonly SchoolDbContext _schoolDbContext;
         private readonly IRedisDbHelper  _redisDbHelper;
@@ -17,7 +17,7 @@ namespace school_rest_api.Functions.Queries
             _redisDbHelper   = redisDbHelper;
         }
 
-        public async Task<GetStudentsSortedByGenderQueryResult> Handle(GetStudentsByClassAndSortedByGenderQuery request, CancellationToken cancellationToken)
+        public async Task<GetStudentsSortedByGenderResult> Handle(GetStudentsByClassAndSortedByGenderQuery request, CancellationToken cancellationToken)
         {
             var key = nameof(GetStudentsByClassAndSortedByGenderQuery) + request.Model.Id.ToString();
 
@@ -31,9 +31,9 @@ namespace school_rest_api.Functions.Queries
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 
-            return new GetStudentsSortedByGenderQueryResult
+            return new GetStudentsSortedByGenderResult
             {
-                Students = new List<GetStudentsSortedByGenderQueryItem>(studentsEntries.Select(s => new GetStudentsSortedByGenderQueryItem
+                Students = new List<GetStudentsSortedByGenderItem>(studentsEntries.Select(s => new GetStudentsSortedByGenderItem
                 {
                     Id            = s.Id,
                     FirstName     = s.FirstName,

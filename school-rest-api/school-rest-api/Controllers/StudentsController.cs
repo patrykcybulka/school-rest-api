@@ -19,7 +19,7 @@ namespace school_rest_api.Controllers
         [HttpGet("{id}")]
         public async Task<IActionResult> Get(Guid id)
         {
-            var model = new GetStudentByIdQueryDTO { Id = id };
+            var model = new GetStudentByIdDTO { Id = id };
 
             var command = new GetStudentByIdQuery(model);
 
@@ -37,7 +37,7 @@ namespace school_rest_api.Controllers
         [HttpGet("by-class-and-group")]
         public async Task<IActionResult> GetByClassAndGroup(Guid id, ELanguageGroup group)
         {
-            var model = new GetStudentsByClassAndGroupQueryDTO { Id = id, LanguageGroup = group };
+            var model = new GetStudentsByClassAndGroupDTO { Id = id, LanguageGroup = group };
 
             var command = new GetStudentsByClassAndGroupQuery(model);
 
@@ -47,7 +47,7 @@ namespace school_rest_api.Controllers
         [HttpGet("by-class-and-sorted-by-gender")]
         public async Task<IActionResult> GetByClassAndSortedByGender(Guid id, EGender gender)
         {
-            var model = new GetStudentsByClassAndSortedByGenderQueryDTO { Id = id, Gender = gender };
+            var model = new GetStudentsByClassAndSortedByGenderDTO { Id = id, Gender = gender };
 
             var command = new GetStudentsByClassAndSortedByGenderQuery(model);
 

@@ -3,12 +3,12 @@ using System.ComponentModel.DataAnnotations;
 
 namespace school_rest_api.Models.DTO
 {
-    public class GetStudentsByClassAndGroupQueryDTO
+    public class GetStudentsByClassAndSortedByGenderDTO
     {
         [Required]
         public Guid Id { get; set; }
 
         [Required]
-        public ELanguageGroup LanguageGroup { get; set; }
+        public EGender Gender { get; set; }
     }
 }
