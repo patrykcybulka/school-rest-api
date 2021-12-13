@@ -54,9 +54,16 @@ namespace school_rest_api.Functions.Commands
 
         private IEnumerable<Guid> updateStudents(Guid classId)
         {
-            var studentIds = _schoolDbContext.Students.Where(s => s.ClassId == classId).ToList();
+            var studentsEntries = _schoolDbContext.Students.Where(s => s.ClassId == classId).ToList();
 
-            return studentIds.Select(s => s.Id);
+            foreach (var studentEntry in studentsEntries)
+            {
+                studentEntry.ClassId = Guid.Empty;
+            }
+
+            _schoolDbContext.UpdateRange(studentsEntries);
+
+            return studentsEntries.Select(s => s.Id);
         }
 
         private void clearCache(Guid classId, Guid educatorId, IEnumerable<Guid> studentIds)
