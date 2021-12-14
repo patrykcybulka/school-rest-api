@@ -19,7 +19,7 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetStudentsByClassAndGroupResult> Handle(GetStudentsByClassAndGroupQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetStudentsByClassAndGroupQuery) + request.Model.Id.ToString();
+            var key = nameof(GetStudentsByClassAndGroupQuery) + request.Model.Id.ToString() + request.Model.LanguageGroup;
 
             IEnumerable<StudentEntry> studentsEntries = null;
 

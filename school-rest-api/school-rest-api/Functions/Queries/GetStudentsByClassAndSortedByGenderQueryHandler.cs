@@ -19,7 +19,7 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetStudentsSortedByGenderResult> Handle(GetStudentsByClassAndSortedByGenderQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetStudentsByClassAndSortedByGenderQuery) + request.Model.Id.ToString();
+            var key = nameof(GetStudentsByClassAndSortedByGenderQuery) + request.Model.Id.ToString() + request.Model.Gender;
 
             IEnumerable<StudentEntry> studentsEntries = null;
 

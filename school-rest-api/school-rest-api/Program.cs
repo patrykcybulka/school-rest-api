@@ -18,7 +18,7 @@ var multiplexer = ConnectionMultiplexer.Connect(builder.Configuration.GetConnect
 var redisDbManager = new RedisDbManager(multiplexer);
 
 builder.Services.AddSingleton<IRedisDbManager>(redisDbManager);
-builder.Services.AddSingleton<ISchoolDbManager, SchoolDbManager>();
+builder.Services.AddScoped<ISchoolDbManager, SchoolDbManager>();
 
 var app = builder.Build();
 

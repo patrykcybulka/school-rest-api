@@ -9,12 +9,12 @@ namespace school_rest_api.Functions.Queries
     public class GetAllClassesQueryHandler : IRequestHandler<GetAllClassesQuery, GetAllClassesResult>
     {
         private readonly ISchoolDbManager _schoolDbManager;
-        private readonly IRedisDbManager  _redisDbHelper;
+        private readonly IRedisDbManager  _redisDbManager;
 
-        public GetAllClassesQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbHelper)
+        public GetAllClassesQueryHandler(ISchoolDbManager schoolDbManager, IRedisDbManager redisDbManager)
         {
             _schoolDbManager = schoolDbManager;
-            _redisDbHelper   = redisDbHelper;
+            _redisDbManager  = redisDbManager;
         }
 
         public async Task<GetAllClassesResult> Handle(GetAllClassesQuery request, CancellationToken cancellationToken)
@@ -23,12 +23,12 @@ namespace school_rest_api.Functions.Queries
 
             IEnumerable<ClassEntry> classEntries = null;
 
-            classEntries = await _redisDbHelper.GetDataAsync<List<ClassEntry>>(key);
+            classEntries = await _redisDbManager.GetDataAsync<List<ClassEntry>>(key);
 
             if (classEntries == null)
             {
                 classEntries = _schoolDbManager.GetAllClass();
-                _redisDbHelper.SetDataAsync(key, classEntries);
+                _redisDbManager.SetDataAsync(key, classEntries);
             }
 
             return new GetAllClassesResult
