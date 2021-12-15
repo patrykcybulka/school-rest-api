@@ -19,8 +19,6 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetStudentsByClassAndGroupResult> Handle(GetStudentsByClassAndGroupQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetStudentsByClassAndGroupQuery) + request.Model.Id.ToString() + request.Model.LanguageGroup;
-
             IEnumerable<StudentEntry> studentsEntries = null;
 
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
@@ -28,6 +26,9 @@ namespace school_rest_api.Functions.Queries
             if (studentsEntries == null)
             {
                 studentsEntries = _schoolDbManager.GetStudents(s => s.ClassId == request.Model.Id && s.LanguageGroup == request.Model.LanguageGroup);
+
+                var key = string.Format(Constants.GetStudentsByClassAndGroupQueryFormatKey, request.Model.Id.ToString());
+
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 

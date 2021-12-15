@@ -2,7 +2,6 @@
 using school_rest_api.Databases;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
-using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -37,8 +36,8 @@ namespace school_rest_api.Functions.Commands
         {
             var keys = new List<string>
             {
-                nameof(GetAllEducatorsQuery),
-                nameof(GetEducatorByIdQuery) + educatorId.ToString(),
+                Constants.GetAllEducatorsQueryKey,
+                string.Format(Constants.GetEducatorByIdQueryFormatKey, educatorId.ToString())
             };
 
             _redisDbHelper.RemoveOldDataAsync(keys);

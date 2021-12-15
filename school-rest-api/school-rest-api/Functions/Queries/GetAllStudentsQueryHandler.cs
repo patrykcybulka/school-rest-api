@@ -19,8 +19,6 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetAllStudentsResult> Handle(GetAllStudentsQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetAllStudentsQuery);
-
             IEnumerable<StudentEntry> studentsEntries = null;
 
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
@@ -28,7 +26,8 @@ namespace school_rest_api.Functions.Queries
             if (studentsEntries == null)
             {
                 studentsEntries = _schoolDbContext.GetAllStudent();
-                _redisDbHelper.SetDataAsync(key, studentsEntries);
+
+                _redisDbHelper.SetDataAsync(Constants.GetAllStudentsQueryKey, studentsEntries);
             }
 
             return new GetAllStudentsResult

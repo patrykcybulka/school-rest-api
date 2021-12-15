@@ -20,8 +20,6 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetClassByIdResult> Handle(GetClassByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetClassByIdQuery) + request.Model.Id.ToString();
-
             ClassEntry classEntry = null;
 
             classEntry = await _redisDbHelper.GetDataAsync<ClassEntry>(key);
@@ -31,6 +29,8 @@ namespace school_rest_api.Functions.Queries
                 classEntry = _schoolDbContext.GetClass(c => c.Id == request.Model.Id);
 
                 Guard.IsTrue(classEntry == null, EErrorCode.ClassNotExist);
+
+                var key = string.Format(Constants.GetClassByIdQueryFormatKey, classEntry.Id);
 
                 _redisDbHelper.SetDataAsync(key, classEntry);
             }

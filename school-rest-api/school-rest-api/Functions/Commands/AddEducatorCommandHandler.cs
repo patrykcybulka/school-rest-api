@@ -3,7 +3,6 @@ using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
-using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -42,7 +41,7 @@ namespace school_rest_api.Functions.Commands
 
         private void clearCache()
         {
-            var keys = new List<string> { nameof(GetAllEducatorsQuery) };
+            var keys = new List<string> { Constants.GetAllEducatorsQueryKey };
 
             _redisDbHelper.RemoveOldDataAsync(keys);
         }

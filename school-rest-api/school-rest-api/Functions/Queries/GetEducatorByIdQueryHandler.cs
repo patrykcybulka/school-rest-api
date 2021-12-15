@@ -20,8 +20,6 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetEducatorByIdResult> Handle(GetEducatorByIdQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetEducatorByIdQuery) + request.Model.Id.ToString();
-
             EducatorEntry educatorEntry = null;
 
             educatorEntry = await _redisDbHelper.GetDataAsync<EducatorEntry>(key);
@@ -31,6 +29,8 @@ namespace school_rest_api.Functions.Queries
                 educatorEntry = _schoolDbManager.GetEducator(e => e.Id == request.Model.Id);
 
                 Guard.IsTrue(educatorEntry == null, EErrorCode.EducatorNotExist);
+
+                var key = string.Format(Constants.GetEducatorByIdQueryFormatKey, educatorEntry.Id);
 
                 _redisDbHelper.SetDataAsync(key, educatorEntry);
             }

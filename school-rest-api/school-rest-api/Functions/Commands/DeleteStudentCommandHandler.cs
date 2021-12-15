@@ -35,8 +35,8 @@ namespace school_rest_api.Functions.Commands
         {
             var keys = new List<string>
             {
-                nameof(GetAllStudentsQuery),
-                nameof(GetStudentByIdQuery) + studentId.ToString(),
+                Constants.GetAllStudentsQueryKey,
+                string.Format(GetStudentByIdQuery, studentId.ToString())
             };
 
             _redisDbHelper.RemoveOldDataAsync(keys);

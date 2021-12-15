@@ -19,8 +19,6 @@ namespace school_rest_api.Functions.Queries
 
         public async Task<GetStudentsSortedByGenderResult> Handle(GetStudentsByClassAndSortedByGenderQuery request, CancellationToken cancellationToken)
         {
-            var key = nameof(GetStudentsByClassAndSortedByGenderQuery) + request.Model.Id.ToString() + request.Model.Gender;
-
             IEnumerable<StudentEntry> studentsEntries = null;
 
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
@@ -28,6 +26,9 @@ namespace school_rest_api.Functions.Queries
             if (studentsEntries == null)
             {
                 studentsEntries = _schoolDbManager.GetStudents(s => s.ClassId == request.Model.Id).OrderByDescending(s => s.Gender == request.Model.Gender);
+
+                var key = string.Format(Constants.GetStudentsByClassAndSortedByGenderQueryFormatKey, request.Model.Id.ToString());
+
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }
 
