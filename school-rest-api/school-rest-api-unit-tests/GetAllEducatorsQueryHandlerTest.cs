@@ -3,6 +3,7 @@ using Moq;
 using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Functions.Queries;
+using school_rest_api_unit_tests.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -13,7 +14,7 @@ namespace school_rest_api_unit_tests
     public class GetAllEducatorsQueryHandlerTest
     {
         [TestMethod]
-        public void GetAllEducatorsQueryHandler_RedisNoCache()
+        public void GetAllEducatorsQueryHandler_NoDataInRedisCache()
         {
             var educatorEntries = new List<EducatorEntry>();
             educatorEntries.Add(new EducatorEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "EducatorFirstName1", Surname = "EducatorSurname1" });
@@ -40,7 +41,7 @@ namespace school_rest_api_unit_tests
         }
 
         [TestMethod]
-        public void GetAllEducatorsQueryHandler_RedisCache()
+        public void GetAllEducatorsQueryHandler_DataInRedisCache()
         {
             var educatorEntries = new List<EducatorEntry>();
             educatorEntries.Add(new EducatorEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "EducatorFirstName1", Surname = "EducatorSurname1" });

@@ -22,6 +22,8 @@ namespace school_rest_api.Functions.Queries
         {
             ClassEntry classEntry = null;
 
+            var key = string.Format(Constants.GetClassByIdQueryFormatKey, request.Model.Id);
+
             classEntry = await _redisDbHelper.GetDataAsync<ClassEntry>(key);
 
             if (classEntry == null)
@@ -29,8 +31,6 @@ namespace school_rest_api.Functions.Queries
                 classEntry = _schoolDbContext.GetClass(c => c.Id == request.Model.Id);
 
                 Guard.IsTrue(classEntry == null, EErrorCode.ClassNotExist);
-
-                var key = string.Format(Constants.GetClassByIdQueryFormatKey, classEntry.Id);
 
                 _redisDbHelper.SetDataAsync(key, classEntry);
             }

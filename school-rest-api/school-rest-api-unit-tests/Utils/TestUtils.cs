@@ -2,12 +2,9 @@
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
 using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
 using System.Threading.Tasks;
 
-namespace school_rest_api_unit_tests
+namespace school_rest_api_unit_tests.Utils
 {
     public sealed class TestUtils
     {

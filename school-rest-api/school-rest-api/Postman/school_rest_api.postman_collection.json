@@ -1,0 +1,617 @@
+{
+	"info": {
+		"_postman_id": "c294d5e3-04b1-466c-8fcc-60e457ea5a37",
+		"name": "school_rest_api",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+	},
+	"item": [
+		{
+			"name": "GetClasses",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "http://localhost:5000/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddClass",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"A\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetClassById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"name\": \"A\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/classes/a239cbd8-b954-4265-b2d7-7758bb3657ff",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"classes",
+						"a239cbd8-b954-4265-b2d7-7758bb3657ff"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateClass",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteClass",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/classes",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"classes"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddEducator",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"classId\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\",\r\n  \"firstName\": \"Patryk\",\r\n  \"surname\": \"Cybułka\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/educators",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"educators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEducatorById",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/educators/038362fb-5976-401f-bd19-41dc4e405f05",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"educators",
+						"038362fb-5976-401f-bd19-41dc4e405f05"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetEducators",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/educators",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"educators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateEducators",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"038362fb-5976-401f-bd19-41dc4e405f05\",\r\n  \"classId\": \"3fa85f64-5717-4562-b3fc-2c963f66afa6\",\r\n  \"firstName\": \"Patryk\",\r\n  \"surname\": \"Gurgul\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/educators",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"educators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteEducator",
+			"event": [
+				{
+					"listen": "prerequest",
+					"script": {
+						"exec": [
+							""
+						],
+						"type": "text/javascript"
+					}
+				}
+			],
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/educators",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"educators"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "AddStudent",
+			"request": {
+				"method": "POST",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc\"\r\n  \"classId\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\",\r\n  \"firstName\": \"Diana\",\r\n  \"surname\": \"Gurgul\",\r\n  \"gender\": 2,\r\n  \"languageGroup\": 1\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudents",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudentById",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "",
+						"value": "",
+						"type": "text",
+						"disabled": true
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": ""
+				},
+				"url": {
+					"raw": "http://localhost:5000/students/82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students",
+						"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "UpdateStudent",
+			"request": {
+				"method": "PUT",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc\",\r\n  \"classId\": \"a239cbd8-b954-4265-b2d7-7758bb3657ff\",\r\n  \"firstName\": \"Diana\",\r\n  \"surname\": \"Gurgul\",\r\n  \"gender\": 2,\r\n  \"languageGroup\": 2\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "DeleteStudent",
+			"request": {
+				"method": "DELETE",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/students",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudentsByClassAndGroup",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/students/by-class-and-group?id=a239cbd8-b954-4265-b2d7-7758bb3657ff&group=2",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students",
+						"by-class-and-group"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "a239cbd8-b954-4265-b2d7-7758bb3657ff"
+						},
+						{
+							"key": "group",
+							"value": "2"
+						}
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "GetStudentsByClassAndSortedByGender",
+			"protocolProfileBehavior": {
+				"disableBodyPruning": true
+			},
+			"request": {
+				"method": "GET",
+				"header": [
+					{
+						"key": "Content-Type",
+						"value": "application/json",
+						"type": "text"
+					}
+				],
+				"body": {
+					"mode": "raw",
+					"raw": "{\r\n  \"id\": \"82ff64bd-7b3b-4b40-8b1e-4fa6b43c51cc\"\r\n}"
+				},
+				"url": {
+					"raw": "http://localhost:5000/students/by-class-and-sorted-by-gender?id=a239cbd8-b954-4265-b2d7-7758bb3657ff&gender=1",
+					"protocol": "http",
+					"host": [
+						"localhost"
+					],
+					"port": "5000",
+					"path": [
+						"students",
+						"by-class-and-sorted-by-gender"
+					],
+					"query": [
+						{
+							"key": "id",
+							"value": "a239cbd8-b954-4265-b2d7-7758bb3657ff"
+						},
+						{
+							"key": "gender",
+							"value": "1"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

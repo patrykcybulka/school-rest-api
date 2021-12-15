@@ -4,6 +4,7 @@ using school_rest_api.Databases;
 using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Functions.Queries;
+using school_rest_api_unit_tests.Utils;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -14,7 +15,7 @@ namespace school_rest_api_unit_tests
     public class GetAllStudentsQueryHandlerTest
     {
         [TestMethod]
-        public void GetAllStudentsQueryHandler_RedisNoCache()
+        public void GetAllStudentsQueryHandler_NoDataInRedisCache()
         {
             var studentEntries = new List<StudentEntry>();
             studentEntries.Add(new StudentEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "StudentFirstName1", Surname = "StudentSurname1", Gender = EGender.Male, LanguageGroup = ELanguageGroup.English });
@@ -41,7 +42,7 @@ namespace school_rest_api_unit_tests
         }
 
         [TestMethod]
-        public void GetAllStudentsQueryHandler_RedisCache()
+        public void GetAllStudentsQueryHandler_DataInRedisCache()
         {
             var studentEntries = new List<StudentEntry>();
             studentEntries.Add(new StudentEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "StudentFirstName1", Surname = "StudentSurname1", Gender = EGender.Male, LanguageGroup = ELanguageGroup.English });

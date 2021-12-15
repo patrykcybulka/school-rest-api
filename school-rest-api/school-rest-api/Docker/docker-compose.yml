@@ -1,0 +1,15 @@
+version: "1.0"  # optional since v1.27.0
+services:
+  school-rest-api:
+    image: school-rest-api
+    ports:
+      - "5000:80"
+    links:
+      - redis
+      - postgres
+  redis:
+    image: redis
+  postgres:
+    image: postgres
+    environment:
+    - POSTGRES_PASSWORD=postgres

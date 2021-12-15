@@ -2,7 +2,6 @@
 using school_rest_api.Databases;
 using school_rest_api.Enums;
 using school_rest_api.Exceptions;
-using school_rest_api.Functions.Queries;
 using school_rest_api.Models.Results;
 
 namespace school_rest_api.Functions.Commands
@@ -26,6 +25,8 @@ namespace school_rest_api.Functions.Commands
 
             _schoolDbManager.RenoveStudent(studentEntry);
 
+            clearCache(studentEntry.Id);
+
             await _schoolDbManager.SaveChangesAsync();
 
             return EmptyObjectResult.Result;
@@ -36,7 +37,7 @@ namespace school_rest_api.Functions.Commands
             var keys = new List<string>
             {
                 Constants.GetAllStudentsQueryKey,
-                string.Format(GetStudentByIdQuery, studentId.ToString())
+                string.Format(Constants.GetStudentByIdQueryFormatKey, studentId.ToString())
             };
 
             _redisDbHelper.RemoveOldDataAsync(keys);

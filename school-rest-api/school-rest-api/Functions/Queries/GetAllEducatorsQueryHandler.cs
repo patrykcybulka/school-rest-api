@@ -21,7 +21,7 @@ namespace school_rest_api.Functions.Queries
         {
             IEnumerable<EducatorEntry> educatorsEntries = null;
 
-            educatorsEntries = await _redisDbHelper.GetDataAsync<List<EducatorEntry>>(key);
+            educatorsEntries = await _redisDbHelper.GetDataAsync<List<EducatorEntry>>(Constants.GetAllEducatorsQueryKey);
 
             if (educatorsEntries == null)
             {

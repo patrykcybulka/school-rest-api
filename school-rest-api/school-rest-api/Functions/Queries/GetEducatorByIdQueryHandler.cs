@@ -22,6 +22,8 @@ namespace school_rest_api.Functions.Queries
         {
             EducatorEntry educatorEntry = null;
 
+            var key = string.Format(Constants.GetEducatorByIdQueryFormatKey, request.Model.Id);
+
             educatorEntry = await _redisDbHelper.GetDataAsync<EducatorEntry>(key);
 
             if (educatorEntry == null)
@@ -29,8 +31,6 @@ namespace school_rest_api.Functions.Queries
                 educatorEntry = _schoolDbManager.GetEducator(e => e.Id == request.Model.Id);
 
                 Guard.IsTrue(educatorEntry == null, EErrorCode.EducatorNotExist);
-
-                var key = string.Format(Constants.GetEducatorByIdQueryFormatKey, educatorEntry.Id);
 
                 _redisDbHelper.SetDataAsync(key, educatorEntry);
             }

@@ -5,6 +5,7 @@ using school_rest_api.Entries;
 using school_rest_api.Enums;
 using school_rest_api.Functions.Queries;
 using school_rest_api.Models.DTO;
+using school_rest_api_unit_tests.Utils;
 using System;
 using System.Linq.Expressions;
 
@@ -14,7 +15,7 @@ namespace school_rest_api_unit_tests
     public class GetEducatorByIdQueryHandlerTest
     {
         [TestMethod]
-        public void GetEducatorByIdQueryHandler_RedisNoCache()
+        public void GetEducatorByIdQueryHandler_NoDataInRedisCache()
         {
             var educatorEntry = new EducatorEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "EducatorFirstName1", Surname = "EducatorSumary1" };
 
@@ -40,7 +41,7 @@ namespace school_rest_api_unit_tests
         }
 
         [TestMethod]
-        public void GetEducatorByIdQueryHandler_RedisCache()
+        public void GetEducatorByIdQueryHandler_DataInRedisCache()
         {
             var educatorEntry = new EducatorEntry { Id = Guid.NewGuid(), ClassId = Guid.NewGuid(), FirstName = "EducatorFirstName1", Surname = "EducatorSumary1" };
 
@@ -53,9 +54,7 @@ namespace school_rest_api_unit_tests
 
             var redisDbManagerMock = new Mock<IRedisDbManager>();
 
-            var key = nameof(GetEducatorByIdQuery) + educatorEntry.Id.ToString();
-
-            redisDbManagerMock.Setup(r => r.GetDataAsync<EducatorEntry>(key)).ReturnsAsync(educatorEntry);
+            redisDbManagerMock.Setup(r => r.GetDataAsync<EducatorEntry>(It.IsAny<string>())).ReturnsAsync(educatorEntry);
             redisDbManagerMock.Setup(r => r.SetDataAsync(It.IsAny<string>(), It.IsAny<EducatorEntry>())).Callback(() => setDataAsyncMethodUsed = true);
 
             var getEducatorByIdQueryHandler = new GetEducatorByIdQueryHandler(schoolDbManagerMock.Object, redisDbManagerMock.Object);

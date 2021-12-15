@@ -21,13 +21,13 @@ namespace school_rest_api.Functions.Queries
         {
             IEnumerable<StudentEntry> studentsEntries = null;
 
+            var key = string.Format(Constants.GetStudentsByClassAndGroupQueryFormatKey, request.Model.Id.ToString(), request.Model.LanguageGroup);
+
             studentsEntries = await _redisDbHelper.GetDataAsync<List<StudentEntry>>(key);
 
             if (studentsEntries == null)
             {
                 studentsEntries = _schoolDbManager.GetStudents(s => s.ClassId == request.Model.Id && s.LanguageGroup == request.Model.LanguageGroup);
-
-                var key = string.Format(Constants.GetStudentsByClassAndGroupQueryFormatKey, request.Model.Id.ToString());
 
                 _redisDbHelper.SetDataAsync(key, studentsEntries);
             }

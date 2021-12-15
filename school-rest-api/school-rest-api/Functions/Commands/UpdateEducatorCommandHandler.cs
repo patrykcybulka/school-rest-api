@@ -26,7 +26,7 @@ namespace school_rest_api.Functions.Commands
             var educatorEntries = _schoolDbManager.GetEducators( e => e.Id == request.Model.Id || e.ClassId == request.Model.ClassId);
 
             Guard.IsTrue(educatorEntries == null, EErrorCode.EducatorNotExist);
-            Guard.IsTrue(educatorEntries.Count() > 1 || educatorEntries.Any( e => e.ClassId == request.Model.ClassId), EErrorCode.ClassAssignedToAnotherEducator);
+            Guard.IsTrue(educatorEntries.Count() > 1 || educatorEntries.Any( e => e.ClassId == request.Model.ClassId && e.Id != request.Model.Id), EErrorCode.ClassAssignedToAnotherEducator);
 
             var educatorEntry = modifyEducator(educatorEntries.First(), request.Model);
 

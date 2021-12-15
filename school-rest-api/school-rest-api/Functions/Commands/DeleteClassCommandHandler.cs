@@ -84,7 +84,7 @@ namespace school_rest_api.Functions.Commands
             {
                 foreach (var userId in studentIds)
                 {
-                    keys.Add(string.Format(Constants.GetStudentByIdQueryFormatKey), userId.ToString());
+                    keys.Add(string.Format(Constants.GetStudentByIdQueryFormatKey, userId.ToString()));
                 }
             }
 
