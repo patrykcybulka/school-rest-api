@@ -2,7 +2,7 @@ Wymagania:
 Docker engine
 
 Instrukcja uruchomienia:
-1. Uruchomić skrypt do utoworznia obrazy dockerowego aplikacji oraz załądowania obrazu redis i postgres.
+1. Uruchomić skrypt do utworznia obrazy dockerowego aplikacji oraz załądowania obrazu redis i postgres.
   Lokalizacja:
     school-rest-api\school-rest-api\school-rest-api\Docker\loadImages.bat
     lub
