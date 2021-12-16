@@ -1,5 +1,6 @@
 Wymagania:
 Docker engine
+SDK NET 6
 
 Instrukcja uruchomienia:
 1. Uruchomić skrypt do utworznia obrazy dockerowego aplikacji oraz załądowania obrazu redis i postgres.
