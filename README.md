@@ -1,4 +1,5 @@
 Wymagania:
+
 Docker engine
 
 SDK NET 6
