@@ -1,5 +1,6 @@
 Wymagania:
 Docker engine
+
 SDK NET 6
 
 Instrukcja uruchomienia:
